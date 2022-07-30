@@ -1,27 +1,24 @@
-const path = require("path");
-const express = require("express");
+const path = require('path');
+
+const express = require('express');
+const bodyParser = require('body-parser');
+
+const errorController = require('./controllers/error');
+
 const app = express();
-const port = 8080;
 
-// third-party
-const bodyParser = require("body-parser");
+app.set('view engine', 'ejs');
+app.set('views', 'views');
 
-// template-engine
-app.set("view-engine", "ejs");
-app.set("views", "views");
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
 
-// routes-import
-const homeRoutes = require("./routes/home");
-const adminRoutes = require("./routes/admin");
-
-// set-public-static-folder
-app.use(express.static(path.join(__dirname, "public")));
-
-// body-parser
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
 
-// routes-configuration
-app.use(homeRoutes);
-app.use(adminRoutes);
+app.use('/admin', adminRoutes);
+app.use(shopRoutes);
 
-app.listen(port);
+app.use(errorController.get404);
+
+app.listen(3000);

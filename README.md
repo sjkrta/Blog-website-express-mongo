@@ -1,5 +1,0 @@
-# ExpressJs-blog
-
-'''
-npm start
-'''
